@@ -6,6 +6,7 @@ import color from './color';
 import common from './common';
 import components from './components';
 import discover from './discover';
+import editor from './editor';
 import electron from './electron';
 import error from './error';
 import file from './file';
@@ -22,6 +23,7 @@ import portal from './portal';
 import providers from './providers';
 import ragEval from './ragEval';
 import setting from './setting';
+import subscription from './subscription';
 import thread from './thread';
 import tool from './tool';
 import topic from './topic';
@@ -36,6 +38,7 @@ const resources = {
   common,
   components,
   discover,
+  editor,
   electron,
   error,
   file,
@@ -52,6 +55,7 @@ const resources = {
   providers,
   ragEval,
   setting,
+  subscription,
   thread,
   tool,
   topic,

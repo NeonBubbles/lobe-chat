@@ -1,10 +1,9 @@
 import isEqual from 'fast-deep-equal';
-import { parseAsBoolean, useQueryState } from 'nuqs';
 import { useEffect } from 'react';
 import { useHotkeysContext } from 'react-hotkeys-hook';
 
+import { useSend } from '@/app/[variants]/(main)/chat/(workspace)/@conversation/features/ChatInput/useSend';
 import { useClearCurrentMessages } from '@/features/ChatInput/ActionBar/Clear';
-import { useSendMessage } from '@/features/ChatInput/useSend';
 import { useOpenChatSettings } from '@/hooks/useInterceptingRoutes';
 import { useActionSWR } from '@/libs/swr';
 import { useChatStore } from '@/store/chat';
@@ -13,6 +12,7 @@ import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
 import { HotkeyEnum, HotkeyScopeEnum } from '@/types/hotkey';
 
+import { usePinnedAgentState } from '../usePinnedAgentState';
 import { useHotkeyById } from './useHotkeyById';
 
 export const useSaveTopicHotkey = () => {
@@ -48,7 +48,7 @@ export const useRegenerateMessageHotkey = () => {
 
 export const useToggleLeftPanelHotkey = () => {
   const isZenMode = useGlobalStore((s) => s.status.zenMode);
-  const [isPinned] = useQueryState('pinned', parseAsBoolean);
+  const [isPinned] = usePinnedAgentState();
   const showSessionPanel = useGlobalStore(systemStatusSelectors.showSessionPanel);
   const updateSystemStatus = useGlobalStore((s) => s.updateSystemStatus);
 
@@ -75,8 +75,10 @@ export const useToggleRightPanelHotkey = () => {
 };
 
 export const useAddUserMessageHotkey = () => {
-  const { send } = useSendMessage();
-  return useHotkeyById(HotkeyEnum.AddUserMessage, () => send({ onlyAddUserMessage: true }));
+  const { send } = useSend();
+  return useHotkeyById(HotkeyEnum.AddUserMessage, () => {
+    send({ onlyAddUserMessage: true });
+  });
 };
 
 export const useClearCurrentMessagesHotkey = () => {
